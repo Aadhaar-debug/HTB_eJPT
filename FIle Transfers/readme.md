@@ -157,4 +157,13 @@ We'll first start Netcat (nc) on the compromised machine, listening with option 
 ## Ncat - Compromised Machine - Listening on Port 8000
 - victim@target:~$ ncat -l -p 8000 --recv-only > SharpKatz.exe
 
+# File Encryption and decryption in Linux
+
+## Encrypting /etc/passwd with openssl
+- Aadhaar Koul@htb[/htb]$ openssl enc -aes256 -iter 100000 -pbkdf2 -in /etc/passwd -out passwd.enc
+
+## Decrypt passwd.enc with openssl
+- Aadhaar Koul@htb[/htb]$ openssl enc -d -aes256 -iter 100000 -pbkdf2 -in passwd.enc -out passwd
+
+
 
